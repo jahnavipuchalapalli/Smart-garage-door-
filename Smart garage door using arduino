@@ -1,0 +1,33 @@
+#include <Arduino.h>
+
+// Simulated garage door status
+bool doorClosed = true;
+
+void setup() {
+  // Initialize Serial communication
+  Serial.begin(9600);
+}
+
+void loop() {
+  // Check for commands from Python
+  if (Serial.available() > 0) {
+    char command = Serial.read();
+    if (command == 'o') {
+      // Open the door
+      doorClosed = false;
+      Serial.println("Garage door opened");
+    } else if (command == 'c') {
+      // Close the door
+      doorClosed = true;
+      Serial.println("Garage door closed");
+    } else if (command == 's') {
+      // Check door status
+      if (doorClosed) {
+        Serial.println("Garage door is closed");
+      } else {
+        Serial.println("Garage door is open");
+      }
+    }
+  }
+  delay(100); // Small delay to avoid flooding the Serial port
+}
